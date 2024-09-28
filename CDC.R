@@ -48,16 +48,24 @@ healthdata <- healthdata[, -1]
 
 
 allages <- healthdata %>%
-  filter(`Age_Group` == "All Ages", `Jurisdiction` == "United States")
-  
+  filter(`Age_Group` == "All Ages", `Jurisdiction` == "United States") %>%
+  mutate(MMWR_Week = 1:n())  # Replace MMWR_Week with a sequence from 1 to the number of rows
+
 
 View(allages)
 
-# Create the histogram
 ggplot(data = allages, aes(x = `MMWR_Week`, y = `COVID_Deaths`)) +
-  geom_bar(stat = "identity", fill = "blue") +  # Use bar chart to represent counts of deaths per week
+  geom_bar(stat = "identity", fill = "lightblue") +  # Use light blue for bars
   labs(title = "COVID-19 Deaths by MMWR Week (All Ages, United States)",
        x = "MMWR Week",
        y = "Number of COVID-19 Deaths") +
-  theme_minimal()  # Clean theme
+  theme_minimal() +  # Clean theme
+  theme(
+    panel.grid.major = element_blank(),  # Remove major grid lines
+    panel.grid.minor = element_blank(),  # Remove minor grid lines
+    panel.background = element_rect(fill = "white"),  # Set background color
+    plot.title = element_text(hjust = 0.5),  # Center the title
+    axis.title.x = element_text(size = 12, face = "bold"),  # Customize x-axis title
+    axis.title.y = element_text(size = 12, face = "bold")   # Customize y-axis title
+  )
 
