@@ -49,9 +49,9 @@ healthdata <- healthdata[, -1]
 
 allages <- healthdata %>%
   filter(`Age_Group` == "All Ages", `Jurisdiction` == "United States")
-  mutate(Year = 2020 + (MMWR_Week %/% 5))
   
 
+View(allages)
 
 # Create the histogram
 ggplot(data = allages, aes(x = `MMWR_Week`, y = `COVID_Deaths`)) +
