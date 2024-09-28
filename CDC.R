@@ -1,11 +1,10 @@
 library(tidyverse)
 
-#healthdata <- read.csv("/Users/unitig/cdc2024/Health_Science_Dataset.csv", header = TRUE)
-healthdata <- read.csv("C:/Users/Raeds/Documents/cdc2024/Health_Science_Dataset.csv", skip = 1, header = FALSE)
+#healthdata <- read.csv("/Users/unitig/cdc2024/Health_Science_Dataset.csv", header = TRUE, na.strings = c("", "NA"))
+healthdata <- read.csv("C:/Users/Raeds/Documents/cdc2024/Health_Science_Dataset.csv", skip = 1, header = TRUE)
 
-colnames(healthdata) <- healthdata[1, ]
+# Convert columns to appropriate data types
+#healthdata$mmwr_year <- as.numeric(healthdata$mmwr_year)
 
-# Step 3: Remove the now redundant first row (which was used for headers)
-healthdata <- healthdata[-1, ]
-
-View(healthdata)
+# Check the structure of the updated data frame
+str(healthdata)
