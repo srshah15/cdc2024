@@ -1,7 +1,7 @@
 library(tidyverse)
 
-healthdata <- read.csv("/Users/unitig/cdc2024/Health_Science_Dataset.csv", skip = 1, header = TRUE)
-#healthdata <- read.csv("C:/Users/Raeds/Documents/cdc2024/Health_Science_Dataset.csv", skip = 1, header = TRUE)
+#healthdata <- read.csv("/Users/unitig/cdc2024/Health_Science_Dataset.csv", skip = 1, header = TRUE)
+healthdata <- read.csv("C:/Users/Raeds/Documents/cdc2024/Health_Science_Dataset.csv", skip = 1, header = TRUE)
 
 # Convert columns to appropriate data types
 #healthdata$mmwr_year <- as.numeric(healthdata$mmwr_year)
@@ -35,9 +35,29 @@ healthdata <- healthdata %>%
 
 healthdata <- healthdata %>%
   mutate(
+    `Week Ending Date` = as.Date(`Week_Ending_Date`, format = "%m/%d/%Y"),
+    COVID_Deaths = ifelse(is.na(COVID_Deaths), median(COVID_Deaths, na.rm = TRUE), COVID_Deaths),
     Total_Deaths = ifelse(is.na(Total_Deaths), median(Total_Deaths, na.rm = TRUE), Total_Deaths),
     Pneumonia_Deaths = ifelse(is.na(Pneumonia_Deaths), median(Pneumonia_Deaths, na.rm = TRUE), Pneumonia_Deaths),
     Influenza_Deaths = ifelse(is.na(Influenza_Deaths), median(Influenza_Deaths, na.rm = TRUE), Influenza_Deaths),
     Pneumonia_or_Influenza_Deaths = ifelse(is.na(Pneumonia_or_Influenza_Deaths), median(Pneumonia_or_Influenza_Deaths, na.rm = TRUE), Pneumonia_or_Influenza_Deaths),
     Pneu_Influenza_or_COVID_Deaths = ifelse(is.na(Pneu_Influenza_or_COVID_Deaths), median(Pneu_Influenza_or_COVID_Deaths, na.rm = TRUE), Pneu_Influenza_or_COVID_Deaths)
   )
+
+healthdata <- healthdata[, -1]
+
+
+allages <- healthdata %>%
+  filter(`Age_Group` == "All Ages", `Jurisdiction` == "United States")
+  mutate(Year = 2020 + (MMWR_Week %/% 5))
+  
+
+
+# Create the histogram
+ggplot(data = allages, aes(x = `MMWR_Week`, y = `COVID_Deaths`)) +
+  geom_bar(stat = "identity", fill = "blue") +  # Use bar chart to represent counts of deaths per week
+  labs(title = "COVID-19 Deaths by MMWR Week (All Ages, United States)",
+       x = "MMWR Week",
+       y = "Number of COVID-19 Deaths") +
+  theme_minimal()  # Clean theme
+
