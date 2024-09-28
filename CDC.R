@@ -31,3 +31,13 @@ healthdata <- healthdata %>%
     Pneumonia_or_Influenza_Deaths = Pneumonia.or.Influenza,
     Pneu_Influenza_or_COVID_Deaths = Pneumonia..Influenza..or.COVID.19.Deaths
   )
+
+
+healthdata <- healthdata %>%
+  mutate(
+    Total_Deaths = ifelse(is.na(Total_Deaths), median(Total_Deaths, na.rm = TRUE), Total_Deaths),
+    Pneumonia_Deaths = ifelse(is.na(Pneumonia_Deaths), median(Pneumonia_Deaths, na.rm = TRUE), Pneumonia_Deaths),
+    Influenza_Deaths = ifelse(is.na(Influenza_Deaths), median(Influenza_Deaths, na.rm = TRUE), Influenza_Deaths),
+    Pneumonia_or_Influenza_Deaths = ifelse(is.na(Pneumonia_or_Influenza_Deaths), median(Pneumonia_or_Influenza_Deaths, na.rm = TRUE), Pneumonia_or_Influenza_Deaths),
+    Pneu_Influenza_or_COVID_Deaths = ifelse(is.na(Pneu_Influenza_or_COVID_Deaths), median(Pneu_Influenza_or_COVID_Deaths, na.rm = TRUE), Pneu_Influenza_or_COVID_Deaths)
+  )
